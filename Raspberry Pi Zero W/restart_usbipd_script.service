@@ -1,0 +1,10 @@
+[Unit]
+Description=Service that starts the script which controls the Button and LED for USBIPD restart and status
+After=multi-user.target
+
+[Service]
+Type=idle
+ExecStart=/usr/bin/python /home/path/to/script/restart_usbipd.py
+
+[Install]
+WantedBy=multi-user.target
