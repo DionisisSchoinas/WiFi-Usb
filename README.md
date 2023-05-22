@@ -10,6 +10,7 @@ The RPI is used as a server that accepts connections from the Windows machine or
 2. [Connecting a USB device](#Connecting-a-USB-device)
 3. [RPI Server Installation](#RPI-Server-Installation)
 4. [Windows Client Installation](#Windows-Client-Installation)
+5. [Power Button](#Power-Button)
 5. [Power LED](#Power-LED)
 
 
@@ -129,6 +130,27 @@ The script requires **Administrator access** to run and complete the attaching a
 The script is simply a batch file used to run commands automatically instead of the user running them directly, in order to speed up the process of attaching and detaching USB devices. The script attaches all the USB devices that have been exposed by the RPI server.
 
 **The script should be executed after the server has been setup and started on the RPI**
+
+
+# Power Button
+
+Unplugging the RPI from power with the system still running is never a good idea since this can cause data corruption.
+
+Adding a button to shutdown and reboot the RPI system without an SSH connection can be rather useful, if you want to reduce the power usage of the RPI and/or unplug it from power. 
+
+To accomplish this you need the following:
+
+1. **Enable gpio-shutdown**
+   ```bash
+   # Add the following line to /boot/config.txt
+   # Any GPIO can be used for shutdown but only GPIO 3 supports shutdown AND reboot
+   dtoverlay=gpio-shutdown,gpio_pin=3
+   ```
+2. Connect a Button to **GPIO 3**
+3. Reboot the RPI for changes to take effect
+4. After booting back up
+   1. Press button for system shutdown
+   2. Press button after shutdown for reboot
 
 
 # Power LED
