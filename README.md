@@ -72,12 +72,12 @@ These steps will create a service that on startup will find and expose all the c
 1. Copy the file `usbipd.service` from the `Raspberry Pi Zero W` folder into `/lib/systemd/system/`
    
 ### 3.4 Restart systemctl services
-    ```bash
-    # reload systemd, enable, then start the service
-    sudo systemctl --system daemon-reload
-    sudo systemctl enable usbipd.service
-    sudo systemctl start usbipd.service
-    ```
+   ```bash
+   # reload systemd, enable, then start the service
+   sudo systemctl --system daemon-reload
+   sudo systemctl enable usbipd.service
+   sudo systemctl start usbipd.service
+   ```
 
 ## 4. *(Optional)* Create Python script to restart service with button
 This step is also not required but it is pretty useful if you want to plug or unplug USB devices on the go and simply restart the usbipd service instead of restarting the RPI for the changes to take effect.
