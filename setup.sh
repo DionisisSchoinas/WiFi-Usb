@@ -45,9 +45,9 @@ done
 
 #============== Validate aruments ==============
 
-if [[ $restart_btn -gt -1 ]] && [[ $restart_led -gt -1 ]] then
+if [[ $restart_btn -gt -1 ]] && [[ $restart_led -gt -1 ]]; then
     restart_script=1;
-elif [[ $restart_btn -eq -1 ]] && [[ $restart_led -eq -1 ]] then
+elif [[ $restart_btn -eq -1 ]] && [[ $restart_led -eq -1 ]]; then
     restart_script=0;
 else
     printf "\nEither both --rled and --rbtn must be specified or none, you cannot specify only 1 of them !!!\n\n";
@@ -98,22 +98,23 @@ if [ $usbip_script -eq 1 ]
 then
     printf 'Installing USBIP...\n';
 
-    apt-get -qq install usbip
+    apt-get -q update
+    apt-get -q -y install usbip
     modprobe usbip_host
     echo 'usbip_host' >> /etc/modules
 
     printf 'Setting up services...\n';
 
     cd /usr/sbin/
-    rm usbip_start.sh
+    rm -f usbip_start.sh
     wget -q https://raw.githubusercontent.com/DionisisSchoinas/WiFi-Usb/main/Raspberry%20Pi%20Zero%20W/usbip_start.sh
     chmod +x /usr/sbin/usbip_start.sh
-    rm usbip_stop.sh
+    rm -f usbip_stop.sh
     wget -q https://raw.githubusercontent.com/DionisisSchoinas/WiFi-Usb/main/Raspberry%20Pi%20Zero%20W/usbip_stop.sh
     chmod +x /usr/sbin/usbip_stop.sh
 
     cd  /lib/systemd/system/
-    rm usbipd.service
+    rm -f usbipd.service
     wget -q https://raw.githubusercontent.com/DionisisSchoinas/WiFi-Usb/main/Raspberry%20Pi%20Zero%20W/usbipd.service
 
     # reload systemd, enable, then start the service
@@ -129,18 +130,17 @@ then
     printf 'Installing Restart scripts for UsbIP services...\n'
 
     cd $restart_home
-    rm restart_usbipd.py
-    rm restart_usbipd.py.tmp
+    rm -f restart_usbipd.py
     wget -q https://raw.githubusercontent.com/DionisisSchoinas/WiFi-Usb/main/Raspberry%20Pi%20Zero%20W/restart_usbipd.py
     chmod +x restart_usbipd.py
-    sed "s/{rled}/$restart_led/" restart_usbipd.py > restart_usbipd.py.tmp
-    sed "s/{rbtn}/$restart_btn/" restart_usbipd.py.tmp > restart_usbipd.py
-    rm restart_usbipd.py.tmp
+    sed "s,{rled},$restart_led,1" restart_usbipd.py > restart_usbipd.py.tmp
+    sed "s,{rbtn},$restart_btn,1" restart_usbipd.py.tmp > restart_usbipd.py
+    rm -f restart_usbipd.py.tmp
     
     cd  /lib/systemd/system/
-    rm restart_usbipd_script.service
+    rm -f restart_usbipd_script.service
     wget -q https://raw.githubusercontent.com/DionisisSchoinas/WiFi-Usb/main/Raspberry%20Pi%20Zero%20W/restart_usbipd_script.service
-    sed "s/{rhome}/$restart_home/" restart_usbipd_script.service > restart_usbipd_script.service.tmp && mv restart_usbipd_script.service.tmp restart_usbipd_script.service
+    sed "s,{rhome},$restart_home,1" restart_usbipd_script.service > restart_usbipd_script.service.tmp && mv restart_usbipd_script.service.tmp restart_usbipd_script.service
    
     # reload systemd, enable, then start the service
     systemctl --system daemon-reload
