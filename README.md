@@ -3,13 +3,16 @@ Uses a Raspberry Pi Zero W to wirelessly connect USB devices to a Windows machin
 The RPI is used as a server that accepts connections from the Windows machine or machines.
 
 **USB/IP for Linux:** https://derushadigital.com/other%20projects/2019/02/19/RPi-USBIP-ZWave.html
+
 **USB/IP for Windows:** https://github.com/cezanne/usbip-win
 
 # Table of Contents
 1. [Requirements](#requirements)
 2. [Connecting a USB device](#connecting-a-usb-device)
-3. [RPI Server Installation](#rpi-server-installation)
-4. [Windows Client Installation](#windows-client-installation)
+3. [Disconnecting a USB device](#disconnecting-a-usb-device)
+4. [RPI Server Installation](#rpi-server-installation)
+5. [Windows Client Installation](#windows-client-installation)
+6. [GPIO Pins Image](#gpio_pins_image)
 
 
 # Requirements
@@ -29,7 +32,7 @@ The RPI is used as a server that accepts connections from the Windows machine or
 # Connecting a USB device
 
 1. Plug a USB in the RPI
-2. Update the `usbipd.service`, in order for the new USB device to be attached, by
+2. Update the `usbipd.service`, in order for the new USB device to be detected, by
    * Powering on the RPI
     
         OR
@@ -37,24 +40,33 @@ The RPI is used as a server that accepts connections from the Windows machine or
 3. Run the `WirelessHub.bat` with Administrator access
 4. Select the `Attach All` option
 5. Done
+ 
+
+# Disconnecting a USB device
+
+Disconnecting a single USB device has not been implemented. However the `Attach All` option first detaches all connected USB devices and then reattaches what is left.
+The `Detach All` option will simply detach all connected USB devices.
+
 
 # RPI Server Installation
 
 Assuming that the RPI has been setup and can connect to the WiFi network, now the USB/IP server must be setup.
+You can setup the RPI using either the **setup script** or **set it up manually**
 
-## 1. Using the setup script
+## 1.a Using the setup script
+
+The setup script executes the same steps as the manual setup.
 
 ```bash
-# Script needs sudo privileges to install USB IP
+# Script needs sudo privileges to install USB IP and setup services
 sudo -i
-cd /some/folder/to/run/script
-wget https://raw.githubusercontent.com/DionisisSchoinas/WiFi-Usb/main/setup.sh
-chmod +x setup.sh
+cd /script/location
+wget https://raw.githubusercontent.com/DionisisSchoinas/WiFi-Usb/main/setup.sh && chmod +x setup.sh
 # Install USB IP, Power controls and Reboot controls
-./setup.sh -u -p --rbtn 27 --rled 22 --rhome /home
+./setup.sh -u -p --rbtn 17 --rled 23 --rhome /home
 ```
 
-## 2. Manual setup
+## 1.b Manual setup
 
 ### 1. Install USB/IP
 ```bash
@@ -86,7 +98,7 @@ These steps will create a service that on startup will find and expose all the c
    sudo systemctl start usbipd.service
    ```
 
-### 3. *(Optional)* Create Python script to restart service with button
+### 3. *(Optional)* Create Python script to restart UsbIP service with button
 This step is also not required but it is pretty useful if you want to plug or unplug USB devices on the go and simply restart the usbipd service instead of restarting the RPI for the changes to take effect.
 
 The script has a button and a LED. The button is used to trigger the service restart and the LED displays the status of the service (**ON** if up, **OFF** if down).
@@ -165,3 +177,8 @@ The script requires **Administrator access** to run and complete the attaching a
 The script is simply a batch file used to run commands automatically instead of the user running them directly, in order to speed up the process of attaching and detaching USB devices. The script attaches all the USB devices that have been exposed by the RPI server.
 
 **The script should be executed after the server has been setup and started on the RPI**
+
+
+# GPIO Pins Image
+
+![Image not rendered](https://github.com/DionisisSchoinas/WiFi-Usb/blob/f226d5165f6a19e7392058f4ccb53459dd516598/GPIO_Pins.png)
