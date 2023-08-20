@@ -1,8 +1,6 @@
 @ECHO OFF
 
-:: If static IP has not been setup use hostname instead of IP
-SET raspberryPiIp=192.168.xxx.xxx
-:: SET raspberryPiIp=raspberrypi.local
+SET raspberryPiIp=raspberrypi.local
 SET usbIpInstallationFolder=C:\Example\Folder
 
 ::-------------------------------------
