@@ -12,7 +12,7 @@ The RPI is used as a server that accepts connections from the Windows machine or
 3. [Disconnecting a USB device](#disconnecting-a-usb-device)
 4. [RPI Server Installation](#rpi-server-installation)
 5. [Windows Client Installation](#windows-client-installation)
-6. [GPIO Pins Image](#gpio_pins_image)
+6. [RPI Zero W GPIO Pins Layout](#gpio-pins-layout)
 
 
 # Requirements
@@ -64,6 +64,22 @@ cd /script/location
 wget https://raw.githubusercontent.com/DionisisSchoinas/WiFi-Usb/main/setup.sh && chmod +x setup.sh
 # Install USB IP, Power controls and Reboot controls
 ./setup.sh -u -p --rbtn 17 --rled 23 --rhome /home
+```
+
+```bash
+# Documentation for setup script
+setup.sh [OPTIONS]
+
+Options:
+   -u                   Flag used to setup the UsbIP server
+   -p                   Flag used to setup the RPI power controls
+   --rbtn <number>      The GPIO Pin for the UsbIP service restart button
+   --rled <number>      The GPIO Pin for the UsbIP service status led
+   --rhome <directory>  The directory to save the UsbIP service restart script
+
+Notes:
+   If one of the --rbtn and --rled options is specified then the other MUST be specified as.
+   The script will exit if only one of the specified options is specified.
 ```
 
 ## 1.b Manual setup
@@ -179,6 +195,6 @@ The script is simply a batch file used to run commands automatically instead of 
 **The script should be executed after the server has been setup and started on the RPI**
 
 
-# GPIO Pins Image
+# GPIO Pins Layout
 
 ![Image not rendered](https://github.com/DionisisSchoinas/WiFi-Usb/blob/f226d5165f6a19e7392058f4ccb53459dd516598/GPIO_Pins.png)
