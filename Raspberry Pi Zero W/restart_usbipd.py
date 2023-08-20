@@ -4,9 +4,9 @@ import os
 from gpiozero import LED,Button
 from time import sleep,time
 
-led = LED(22)
+led = LED({rled})
 led.on()
-button = Button(27)
+button = Button({rbtn})
 
 previous_state = 1
 current_state = 0

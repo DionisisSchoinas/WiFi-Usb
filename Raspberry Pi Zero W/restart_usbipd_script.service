@@ -4,7 +4,7 @@ After=multi-user.target
 
 [Service]
 Type=idle
-ExecStart=/usr/bin/python /path/to/script/restart_usbipd.py
+ExecStart=/usr/bin/python {rhome}/restart_usbipd.py
 
 [Install]
 WantedBy=multi-user.target
